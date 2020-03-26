@@ -1,18 +1,14 @@
-import express from 'express'
-import { Request, Response} from 'express'
-const app = express();
+import {Router, Request, Response} from "express";
 
-app.get(`/usuario`, (req:Request, res:Response)=>{
+const loginRoutes= Router();
+
+loginRoutes.get(`/obtener`, (req:Request, res:Response) =>{
 
 res.json({
-ok: true,
-message:"Todo bien"
+    ok:true,
+    message:"Usuarios bien"
+});
 
 });
 
-
-});
-
-
-
-module.exports= app;
+export default loginRoutes;
