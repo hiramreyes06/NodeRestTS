@@ -1,0 +1,49 @@
+Para crear el proyecto de node , dentro de una carpeta ejecutamos los
+ comandos para npm y typescript
+
+npm init
+tsc --init
+
+Ahora tenemos que cambiar el target del tsconfig.json a es6 para no tener
+errores en typescript
+
+Despues creamos una carpeta global y un archivo environment.ts la cual
+tendra el puerto especifico de prueba o usara el de produccion en automatico
+
+export const SERVER_PORT: number = Number( process.env.PORT ) || 5000;
+ 
+Ahora creamos una carpeta llamada clases que conendra las clases que
+ocuparemos como el server.ts para el single ton
+
+import express = require('express');
+
+
+
+export default class Server{
+
+    public app: express.Application;
+    public port: number;
+
+    constructor( puerto: number){
+        this.port= puerto;    
+        this.app= express();
+    }
+
+    //Para inicializar express en una sola instancia en la aplicacion
+    //Patron de diseño SingleTon
+    //Al llamar este metodo inicia el servidor
+    static init (puerto:number){
+
+        return new Server(puerto);
+    }
+
+    start(callback: Function){
+
+        this.app.listen( this.port, callback() );
+
+    }
+
+    
+
+
+} 

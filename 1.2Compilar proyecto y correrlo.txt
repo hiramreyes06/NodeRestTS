@@ -1,0 +1,46 @@
+Primero nos dirijimos a la carpeta donde crearemos nuestro proyecto, y en
+la terminal dentro del proyecto ejecutamos:
+npm init
+
+En el cual nos dara muchas opciones para rellenar datos, como descripcion,
+version, autor. etc..
+
+Ahora despues creamos un archivo index.ts y dentro un console.log
+Despues lo convertimos con tsc index.ts para que lo convierta en javascript
+
+Ahora tenemos que crear un compilador para los .ts, en la terminal ejecutamos
+tsc --init
+
+Ahora en el archivo que crea: tsconfig.json modificamos el "outDir":
+
+"outDir": "dist/",  
+
+Ahora para que el compilador funcione automaticamente al guardar el .ts
+en la terminal ejecutamos:
+tsc -w
+
+Para compilar y ejecutar el servidor,en la terminal dentro del proyecto
+
+node dist/
+
+Ahora para que al guardar automaticamente guarde y suba el proyecto
+debemos instalar solo una ves en cada proyecto:
+
+npm install -g nodemon
+
+Se necesitan ejecutar en una terminal 
+
+tsc -w 
+
+y en la otra
+
+nodemon dist 
+
+
+
+
+
+
+
+
+

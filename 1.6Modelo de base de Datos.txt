@@ -1,0 +1,64 @@
+Un modelo de datos es un registro de base de datos en node.
+En esta app, vamos a crear 2 post y usuarios a la vez van a tener una relacion,
+por la persona que creo el post""....
+
+Vamos a crear una carpeta que contenga los modelos de bases de datos "models"
+Despues le creamos un archivo.ts , como: usuario.model.ts
+
+Despues dentro del .ts ,importamos:
+
+import { Schema, model, Document } from 'mongoose';
+
+Creamos un objecto del tipo Schema. que va contener 4 pripiedades, cada uno
+tendra un tipo y un required para devolver un true o si da error lo que aparesca
+ ejemplo:
+
+const usuarioSchema= new Schema({
+    nombre:{
+
+        type: String,
+        required :[true, 'El nombre es necesario']
+    },
+    avatar: {
+    type:String,
+    default: 'av-1.png'
+
+    },
+    email:{
+        type: String,
+        unique:true,
+        required:[true, 'El correo es necesario']
+
+    },
+    password : {
+        type:String,
+        required:[true,'La contraseña es necesaria']
+    }
+
+});
+
+Ahora crear una interface para el model
+
+interface IUsuario extends Document{
+    nombre:string;
+    email:string;
+    password:string;
+    avatar:string;
+
+}
+
+ahora exportar el objeto model
+
+export const Usuario = model<IUsuario> ('Usuario', usuarioSchema );
+
+
+
+
+
+
+
+
+
+
+
+

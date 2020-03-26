@@ -1,0 +1,35 @@
+Primero descargar el instalador.exe de mongo db, instalarlo,
+Despues dentro de nuestra disco duro c, creamos una carpeta llamada :
+data
+y dentro de esa carpeta crear una llamada:
+db
+Todo esto para que pueda correr mongoDB el servidor dentro de esas carpetas
+
+Ahora para correr el servidor nos vamos a la carpeta donde se instalo y buscamos
+la carpeta bin
+
+Ejemplo:
+C:\Program Files\MongoDB\Server\4.0\bin
+
+Dentro de la carpeta tenemos que dejar corriendo el "mongod"  para tenerlo
+activo
+y ahora para poder trabajar con la base de datos ejecutamos el "mongo.exe"
+
+Los 2 archivos se deben mantener abiertos para trabajar con ellos.
+Para comprobar que estan funcionando, ejecutar en los comandos
+
+help
+
+
+Ahora para un manejo de la bases de datos mas visual, descargar la aplicacion
+Robo 3t
+
+
+En la cual necesitamos primero ejecutar el mongod para que levante la base
+de datos y nos de un puerto
+Ahora si abro robot y creo una nueva conexion en el puerto que nos dio
+mongod
+
+y seria todo
+
+

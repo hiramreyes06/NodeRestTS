@@ -1,0 +1,60 @@
+Primero vamos a crear una carpeta llamada routes, en el cual crearemos un
+archivo usuario.ts, dentro del archivo...
+
+importamos router de express, creamos un const de tipo Router y 
+creamos la funcion userRoutes
+
+import {Router, Request, Response} from 'express';
+
+const userRoutes= Router();
+
+userRoutes.get('/prueba', (req:Request, res :Response)=>{
+    res.json({
+        ok:true,
+        mensaje:'Todo funciona bien'
+
+    })
+});
+
+export default userRoutes:
+//Esto nos sirve para poder utilizarlo desde el index.ts
+
+
+En el cual userRoutes es una peticion de prueba que es .get, 
+el .get necesita un path '/', despues () y funcion de flecha =>{}
+en los parentesis van 2 argumentos "req: Request" de request que significa lo 
+que se esta solicitando , y le "res: Response" response que es lo que vamos
+a retornarle, por ejemplo podemos retornar un json , ejemplo...
+
+res.json({
+        ok:true,
+        mensaje:'Todo funciona bien'
+
+    })
+
+Ahora para comprobar que funiona, abrimos postman y le ponemos el tipo que
+es , como get: y despues la direccion local host con el puerto que creamos en
+el archivo server.ts ejemplo: localhost:3000
+
+Despues la direccion que especificamos en nuestro index.ts como: /user 
+de server.app.use('/user', userRoutes);
+
+Y ahora agregar el path que nosotros hicimos en usuario.ts /prueba
+
+userRoutes.get('/prueba', (req:Request, res :Response)=>{
+Y quedaria asi:
+
+localhost:3000/user/prueba
+
+
+
+
+
+
+
+
+
+
+
+
+

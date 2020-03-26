@@ -1,0 +1,39 @@
+Nos tenemos que asegurar de tener abierto el mongod para abrir el puerto...
+Ahora para conectarlo con mongoDb, tenemos que instalar el npm de mongoose
+para poder trabajarlo con ts ,en la terminal dentro del proyecto ejecutar:
+
+npm install @types/mongoose --save-dev
+
+Despues utilizar el metodo connect de mongoose:
+
+mongoose.connect('mongodb://localhost:27017/fotosgram',{
+    useNewUrlParser:true,   useCreateIndex:true }, (err) =>{
+    if(err) throw err;
+    console.log('Base de datos ONLINE');
+});
+
+En el cual el metodo connect necesita la url de mi base de datos de mongodb
+por defecto es asi:
+'mongodb://localhost:..../' en el cual agregaremos el puerto que nos da mongod
+donde despues necesita el nombre de la base de datos
+el cual si no existe automaticamente lo crea en la primera insercion... base de
+datos no relaciones
+ejemplo: mongoose.connect('mongodb://localhost:27017/fotosgram',
+
+Despues lo tenemos que configurar ("obligatoriamente ahuevo") y definir un
+objeto que va a tener, que va hacer la configuracion a la hora de abrir la 
+coneccion...
+
+{ useNewUrlParser:true,   useCreateIndex:true },
+
+Estos sirven para poder trabajar con los indices y funcione correctamente
+
+Despues todo el metodo connect va a ejecutar un callback por ejemplo un error
+
+
+, (err) =>{
+    if(err) throw err;
+    console.log('Base de datos ONLINE');
+});
+
+Y ya perroooo

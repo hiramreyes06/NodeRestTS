@@ -1,0 +1,31 @@
+Nos vamos a las rutas de usuarios , cmo usuaros.ts, en el cual modificareos 
+el metodo userRoutes.get
+
+userRoutes.post('/create', (req:Request, res :Response)=>{
+   
+    //extraer la informacion del posteo
+    
+    
+    
+    res.json({
+        ok:true,
+        mensaje:'Todo funciona bien jejeje'
+
+    })
+});
+
+Para extraer la informacion del posteo necesitamos pasar toda la aplicacion 
+Server por un middleware, es una funcion que se ejcuta antes de que otras funciones
+nos va a servr para extraer el posteo con un formato de javascript que podemos
+usar...
+
+Nos vamos a ir al index.ts y importamos el bodyparser:
+
+import bodyParser from 'body-parser';
+
+Y utlizamos estas dos funciones..
+
+server.app.use( bodyParser.urlencoded ({ extended: true }));
+server.app.use( bodyParser.json );
+
+

@@ -1,0 +1,58 @@
+En la terminal dentro del proyecto, ejecutar:
+
+
+npm install body-parser
+npm install cors
+npm install mongoose
+npm install jsonwebtoken
+npm install bcryptjs
+
+
+npm install express body-parser cors mongoose express-fileupload jsonwebtoken bcrypt
+
+Expres nos sirve para crear rapidamente un servidor web y tiene lo necesario
+para montar un servidor rest .
+
+El body-parser nos sirve para recibir la informacion de un post , los convierte 
+en un objedo de javascript para poder trabajarlo como node.
+
+Cors nos sirve para aseguraros de que podamos hacer una peticion 
+cros domain.
+
+Mongoose nos sirve para trabajar con modelado de datos de lado de node
+ y poder hacer las interacciones de una base de datos
+
+Express-fileupload Esto nos ayuda para poder recibir las peticiones de 
+imagenes que podriamos postear en nuestra app 
+
+JsonwebToken nos sirve para la autenticacion de nuestra app, con unos 
+web tokens para la forma pasiba del estado del usuario 
+
+bcrypt Es para encriptar las contrase�as persobalizadas de los usarios para
+una mejor seguridad
+
+Todo esto en el proyecto nos crea una carpeta "Nodemodules" que solo son las
+dependencias para el desarrollo para montar las diferentes funciones de la app
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
