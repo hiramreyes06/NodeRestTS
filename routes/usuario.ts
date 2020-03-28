@@ -86,6 +86,9 @@ Usuario.findByIdAndUpdate( req.usuario._id, user, {new :true},
 
         }
 
+
+        //Al actualizar el usuario tenemos que actualizar el token
+        //con los nuevos datos
         const tokenUser= Token.crearJwToken({
             _id: userActualizado._id,
             nombre: userActualizado.nombre,
