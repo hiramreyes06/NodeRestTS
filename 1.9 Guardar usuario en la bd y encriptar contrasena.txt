@@ -1,0 +1,37 @@
+importamos el modelo que queremos guardar, creado de un schema
+import { Usuario } from '../models/Usuario';
+//para encriptar la contrasena
+import bcrypt from 'bcryptjs';
+
+Se necesita crear una ruta de tipo post
+
+usuarioRoutes.post(`/crear`, (req: Request, res: Response) =>{
+
+//Creamos un objeto guardando lo que tenga la request
+    const usuario={
+         nombre: req.body.nombre,
+        avatar: req.body.avatar,
+        email: req.body.email ,
+        //Asi encriptamos la contraseña
+        password: bcrypt.hashSync(req.body.password,10)
+        };
+
+//El schema tiene esta funcion que retorna una promesa
+Usuario.create( usuario).then( usuarioRegistrado =>{
+
+    res.json({
+        ok:true,
+        usuarioRegistrado
+    });
+
+}).catch( err =>{
+
+
+    res.json({
+        ok:false,
+        message:'No se pudo registrar al usuario'
+    });
+    console.log('Error al registrar usuario',err);
+    });
+
+});

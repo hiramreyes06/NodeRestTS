@@ -1,0 +1,12 @@
+Para eso debemos crear una ruta de tipo post, en la cual todos los datos
+se recibiran por el req.body + la propiedad que recibira
+
+usuarioRoutes.post(`/crear`, (req: Request, res: Response) =>{
+
+    const usuario={
+        nombre: req.body.nombre,
+        email: req.body.email,
+        password:req.body.password
+        };
+
+);

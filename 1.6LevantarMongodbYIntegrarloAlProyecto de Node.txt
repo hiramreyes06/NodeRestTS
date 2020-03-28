@@ -6,8 +6,11 @@ npm install @types/mongoose --save-dev
 
 Despues utilizar el metodo connect de mongoose:
 
-mongoose.connect('mongodb://localhost:27017/fotosgram',{
-    useNewUrlParser:true,   useCreateIndex:true }, (err) =>{
+mongoose.connect('mongodb://localhost:27017/fotosgram',
+{ useNewUrlParser:true,
+useFindAndModify:false,
+useCreateIndex:true,
+useUnifiedTopology:true }, (err) =>{
     if(err) throw err;
     console.log('Base de datos ONLINE');
 });
@@ -24,7 +27,7 @@ Despues lo tenemos que configurar ("obligatoriamente ahuevo") y definir un
 objeto que va a tener, que va hacer la configuracion a la hora de abrir la 
 coneccion...
 
-{ useNewUrlParser:true,   useCreateIndex:true },
+{ useNewUrlParser:true, useUnifiedTopology:true }
 
 Estos sirven para poder trabajar con los indices y funcione correctamente
 

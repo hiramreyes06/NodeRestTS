@@ -6,6 +6,7 @@ tsc --init
 
 Ahora tenemos que cambiar el target del tsconfig.json a es6 para no tener
 errores en typescript
+"target": "es6"
 
 Despues creamos una carpeta global y un archivo environment.ts la cual
 tendra el puerto especifico de prueba o usara el de produccion en automatico

@@ -1,5 +1,6 @@
 Primero nos dirijimos a la carpeta donde crearemos nuestro proyecto, y en
 la terminal dentro del proyecto ejecutamos:
+asegurarnos de tener las ultimas versiones de typescript y el target: es6
 npm init
 
 En el cual nos dara muchas opciones para rellenar datos, como descripcion,

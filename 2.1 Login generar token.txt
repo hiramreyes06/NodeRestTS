@@ -1,0 +1,88 @@
+Primero necesitamos crear una clase para manejar los tokens, e la carpeta
+clases creamos toke.ts en donde importaremos jwt con los types
+
+import jwt from 'jsonwebtoken';
+
+export default class Token{
+
+    //Esta seed es privada para encriptar el token
+    private static seed: string='esta-es-mi-key';
+    private static caducidad :string='30d';
+
+    constructor(){
+
+    }
+
+    //AL crear un metodo statico no necesitamos crear el objeto para
+    //acceder al metodo desde otras clases
+    //Este metodo retorna el token generado en bsae al payload los datos
+    //que mandemos y la seed
+    static crearJwToken(payload:any):string {
+
+        //Ejecutamos el metodo firmar para generar el token
+     return jwt.sign({
+         usuario: payload
+     }, this.seed, { expiresIn: this.caducidad})   
+    };
+
+
+    static validarToken( userToken:string){
+
+        return new Promise( (resolve, reject) =>{
+
+            
+        jwt.verify( userToken, this.seed, (err, decoded )=>{
+
+            if(err){
+                reject();
+            }else{
+                resolve(decoded);
+            }
+     
+
+
+
+        } );
+
+
+
+        });
+
+
+    }
+
+
+
+}
+
+
+Verificar token
+Para verificar token tenemos que crear un middleware que nos va a servir para
+validar el token, en una carpeta middlware  primero creamos un archivo
+ autenticacion.ts,  es una funcion que se ejecuta antes de otras,
+y le importamos
+
+import {Response, Request, NextFunction} from 'express'
+import Token from '../clases/token';
+
+export const verificarToken =( req:any, res: Response, next: NextFunction)=>{
+
+    //Asi recibimos y leemos datos de un header personalizado, y como se va 
+//a llamar
+const userToken= req.get('x-token') || '';
+
+Token.validarToken( userToken ).then( (decoded:any) =>{
+
+    req.usuario= decoded.usuario;
+    console.log('token valido ', decoded.usuario);
+    next();
+}).catch(err =>{ 
+
+    res.json({
+        ok:false,
+        err
+    });
+
+}) ;
+
+};

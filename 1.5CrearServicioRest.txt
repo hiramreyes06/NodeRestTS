@@ -32,9 +32,9 @@ res.json({
 
     })
 
-Ahora para comprobar que funiona, abrimos postman y le ponemos el tipo que
-es , como get: y despues la direccion local host con el puerto que creamos en
-el archivo server.ts ejemplo: localhost:3000
+//Tenemos que exportar el objeto para agregarlo a express 
+export default usuarioRoutes;
+
 
 Despues la direccion que especificamos en nuestro index.ts como: /user 
 de server.app.use('/user', userRoutes);
@@ -46,6 +46,10 @@ Y quedaria asi:
 
 localhost:3000/user/prueba
 
+
+Ahora para comprobar que funiona, abrimos postman y le ponemos el tipo que
+es , como get: y despues la direccion local host con el puerto que creamos en
+el archivo server.ts ejemplo: localhost:3000
 
 
 

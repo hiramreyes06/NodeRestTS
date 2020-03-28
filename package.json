@@ -9,12 +9,18 @@
   "author": "Luis Hiram Reyes Vidrio",
   "license": "ISC",
   "dependencies": {
-    "@types/express": "^4.17.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.6"
+    "mongoose": "^5.9.6",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.3",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/mongoose": "^5.7.7"
   }
 }
