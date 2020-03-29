@@ -4,6 +4,7 @@ import {SERVER_PORT} from './global/environment';
 import {Router, Request, Response} from 'express';
 
 import usuarioRoutes from './routes/usuario';
+import postRoutes from './routes/Post';
 
 import mongoose from 'mongoose';
 
@@ -26,6 +27,7 @@ server.app.use(bodyParser.json());
 
 
 server.app.use(`/usuario`,usuarioRoutes);
+server.app.use(`/post`,postRoutes);
 
 //agregamos el link del local host /nombreBasedeDatos
 

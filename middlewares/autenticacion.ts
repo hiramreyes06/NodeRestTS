@@ -10,7 +10,7 @@ const userToken= req.get('x-token') || '';
 Token.validarToken( userToken ).then( (decoded:any) =>{
 
     req.usuario= decoded.usuario;
-    console.log('token valido ', decoded.usuario);
+    // console.log('token valido ', decoded.usuario);
     next();
 }).catch(err =>{ 
 
