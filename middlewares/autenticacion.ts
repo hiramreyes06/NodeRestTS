@@ -16,6 +16,7 @@ Token.validarToken( userToken ).then( (decoded:any) =>{
 
     res.json({
         ok:false,
+        message:'Token no valido',
         err
     });
 

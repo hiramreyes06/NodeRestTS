@@ -10,6 +10,9 @@ import mongoose from 'mongoose';
 
 import bodyParser from 'body-parser';
 
+import fileUpload from 'express-fileupload';
+
+
 
 
 const prueba= Router();
@@ -21,6 +24,13 @@ const server = Server.init( SERVER_PORT );
 server.app.use( bodyParser.urlencoded({extended:true}))
 server.app.use(bodyParser.json());
 
+
+//File upload para subir archivos
+//Si detecta algun  archivo en la peticion estara en el req.files
+//Debemos que agregar la propiedad para que no guarde un archivo vacio
+server.app.use(fileUpload({
+    useTempFiles:true
+}));
 
 //Asi usamos las rutas que tenga el router
 // server.app.use( require('./routes/routes'));

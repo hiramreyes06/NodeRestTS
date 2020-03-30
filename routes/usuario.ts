@@ -138,14 +138,11 @@ Usuario.create( usuario).then( usuarioRegistrado =>{
 });
 
 
-usuarioRoutes.get(`/obtener`, (req: Request, res: Response) =>{
-
-
-
+usuarioRoutes.get(`/token`, verificarToken, (req:any, res: Response) =>{
 
 res.json({
     ok:true,
-    message:"asdas"
+    token: req.usuario
 });
 
 });
