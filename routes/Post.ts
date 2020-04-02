@@ -7,8 +7,7 @@ import { Post } from '../models/Post';
 import { IFileUpload } from '../interfaces/fileUpload';
 import FileSystem from '../clases/file-system';
 
-import fs from 'fs';
-import path from 'path';
+
 
 const fileSystem= new FileSystem();
 
@@ -16,42 +15,40 @@ const fileSystem= new FileSystem();
 const postRoutes= Router();
 
 //obtener posts de forma paginada
-postRoutes.get(`/obtener`, async (req: Request, res: Response) =>{
+postRoutes.get(`/pagina`, async (req: Request, res: Response) =>{
 
 var pagina= Number(req.query.pagina) || 1;
 let skip= pagina-1;
 skip *= 10;
 
 
-const posts= await Post.find()
+// const posts= 
+await Post.find()
 .sort( {_id: -1})
 .skip(skip)
 .limit(10)
 .populate('usuario', '-password')
-.exec( );
+.exec((err, posts) =>{
 
-// (err, posts) =>{
-
-//     if(err) throw err;
+    //Calando await
+    if(err) throw err;
     
-//     if(!posts){
-//         return res.json({
-//             ok:false,
-//             message:'No existen posts'
-//         });
-//     }
+    if(!posts){
+        return res.json({
+            ok:false,
+            message:'No existen posts'
+        });
+    }
     
-//     res.json({
-//     ok:true,
-//     posts
-//     });
-    
-//     }
     res.json({
     ok:true,
-    pagina,
     posts
     });
+    
+    } );
+
+
+    
 
 });
 

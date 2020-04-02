@@ -7,10 +7,98 @@ import bcrypt from 'bcryptjs';
 import Token from '../clases/token';
 
 //Middleware personalizado que creamos
-import { verificarToken } from '../middlewares/autenticacion';
+import { verificarToken, adminRole } from '../middlewares/autenticacion';
 
 const usuarioRoutes= Router();
 
+
+usuarioRoutes.get('/pagina', verificarToken , async(req:any, res:Response) =>{
+
+const pagina= Number (req.query.pagina) || 1;
+let skip = pagina -1;
+skip *= 10; 
+
+ await Usuario.find()
+.limit(10)
+.sort({_id :-1})
+.skip(skip)
+.exec( (err, usuarios) =>{
+
+if(err){
+    return res.status(400).json({
+        ok:false,
+        message:'Error al buscar usuarios'
+    });
+}
+
+res.json({
+    ok:true,
+    usuarios
+});
+
+ });
+
+
+});
+
+
+usuarioRoutes.get('/:termino',[verificarToken,adminRole], async(req:any, res:Response) =>{
+
+const termino = new RegExp( req.params.termino,'i') ;
+
+
+await Usuario.find( {nombre: termino}) 
+.limit(10)
+.exec( (err:any, usuarios:any) =>{
+
+if(err) throw err;
+
+if(! usuarios){
+return res.status(404).json({
+    ok:false,
+    message:'No se encontro el usuario'
+    });
+
+}
+
+
+res.json({
+ok:true,
+usuarios
+});
+
+
+});
+
+
+});
+
+usuarioRoutes.get('/nmUsuarios', (req:any, res: Response)=>{
+
+
+
+Usuario.countDocuments( (err, nmUsuarios) =>{
+
+
+if(err) throw err;
+
+
+
+
+    res.json({
+        ok:true,
+        nmUsuarios
+    });
+
+
+});
+
+
+
+
+
+
+});
 
 usuarioRoutes.post(`/login`, (req:Request, res: Response) =>{
 
@@ -37,7 +125,7 @@ if( usuarioDB.compararPassword(body.password)){
         _id: usuarioDB._id,
         nombre: usuarioDB.nombre,
         email: usuarioDB.email,
-        avatar: usuarioDB.avatar
+        role: usuarioDB.role
     });
 
     res.json({
@@ -93,7 +181,7 @@ Usuario.findByIdAndUpdate( req.usuario._id, user, {new :true},
             _id: userActualizado._id,
             nombre: userActualizado.nombre,
             email: userActualizado.email,
-            avatar: userActualizado.avatar
+            role: userActualizado.role
         });
 
         res.json({
@@ -114,6 +202,7 @@ usuarioRoutes.post(`/crear`, (req: Request, res: Response) =>{
         nombre: req.body.nombre,
         avatar: req.body.avatar,
         email: req.body.email ,
+        role:req.body.role,
         //Asi encriptamos la contraseña
         password: bcrypt.hashSync(req.body.password,10)
         };
@@ -130,9 +219,10 @@ Usuario.create( usuario).then( usuarioRegistrado =>{
 
     res.json({
         ok:false,
-        message:'No se pudo registrar al usuario'
+        message:'No se pudo registrar al usuario',
+        err
     });
-    console.log('Error al registrar usuario',err);
+    
     });
 
 });

@@ -23,3 +23,19 @@ Token.validarToken( userToken ).then( (decoded:any) =>{
 }) ;
 
 };
+
+export const adminRole= (req:any, res:Response, next: NextFunction) =>{
+
+  if(req.usuario.role ==="admin"){
+
+    next();
+  }else{
+
+    res.status(401).json({
+        ok:false,
+        message:'Solo admins pueden hacerlo'
+    })
+  }
+
+    
+};

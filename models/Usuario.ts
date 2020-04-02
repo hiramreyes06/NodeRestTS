@@ -2,6 +2,13 @@ import {Schema, model , Document} from 'mongoose';
 
 
 import bcrypt from 'bcryptjs';
+
+//De esta forma podemos crear opciones de valores para una propiedad
+let rolesValidos ={
+    values:['admin','usuario'],
+    message:'{VALUE} no es un rol valido'
+};
+
 //De esta forma se crea una coleccion que va a guardar los tipos
 //de datos especificados
 const usuarioSchema= new Schema({
@@ -17,7 +24,14 @@ const usuarioSchema= new Schema({
         type:String,
         unique: true,
         required:[true, 'Ya en uso']
-    },password:{
+    },
+    role:{
+        type:String,
+        required:[true,'El role es requerido'],
+        default:'usuario',
+        enum: rolesValidos
+    }
+    ,password:{
         type: String,
         required:[true,'La contraseña es necesaria']
     }
@@ -27,7 +41,9 @@ interface IUsuario extends Document{
 nombre:String;
 avatar:String;
 email:String;
+role:String;
 password:String;
+
 
 //Asi le creamos un metodo a un schema de mongo
 compararPassword(password: string):boolean;
