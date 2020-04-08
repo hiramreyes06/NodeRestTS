@@ -3,4 +3,4 @@ TshEbaGCvVErV03M
 
 M@nt3K0LOkoT3$3RV3R
 
-mongodb+srv://ngFotosgram:TshEbaGCvVErV03M@cluster0-e0rk6.mongodb.net/test
+mongodb+srv://ngFotosgram:TshEbaGCvVErV03M@cluster0-e0rk6.mongodb.net/fotosgram

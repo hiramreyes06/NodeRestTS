@@ -23,29 +23,7 @@ servidor en el codigo
     "node" : ">=8.0.0 <11.0.0" 
   },
 
-Despues dentro de la carpeta dist/ en la terminal , le creamos un repositorio en
-git con 
-git init
-git add .
-git remote add origin  YELLINKDELREPO
-git commit -m "mensaje"
 
-Despues para subirlo a heroku, le asignamos el nombre que esta en heroku
-
-heroku git:remote -a NOMBREAPPHEROKU
-
-git push heroku master
-
-Y ya dog
-
-Para actualizar se repite desde el git add . , menos el de git remote add....
-
-***Si reniegan al actualizar la rama 
-git push -f
-
-o
-
-git push heroku -f
 
 
 

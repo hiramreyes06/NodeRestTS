@@ -8,8 +8,9 @@ EN PRODUCCION DEBE ESPECIFICAR BIEN QUE IPS para seguridad
 
 Ahora tenemos que crear un usuario para acceder a los clusters y base de 
 datos, en mongo atlas en Databse Acces/ Database Users agregamos un 
-usuario , le damos los permisos necesarios y generamos la contraseña y la
-guardamos , ya que se ocupa para contstruir un link
+usuario , le damos los permisos necesarios con READWRITE son sufiecientes
+permisos y generamos la contraseña y la guardamos , ya que se ocupa para 
+contstruir un link
 
 
 usuario: hiramreyes06
