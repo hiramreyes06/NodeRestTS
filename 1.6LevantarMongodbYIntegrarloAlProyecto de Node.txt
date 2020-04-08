@@ -6,7 +6,9 @@ npm install @types/mongoose --save-dev
 
 Despues utilizar el metodo connect de mongoose:
 
-mongoose.connect('mongodb://localhost:27017/fotosgram',
+//El as string es necesario para que typesctipt reconosca la variable
+//global como un string
+mongoose.connect(process.env.URLDB as string,
 { useNewUrlParser:true,
 useFindAndModify:false,
 useCreateIndex:true,

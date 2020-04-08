@@ -8,8 +8,153 @@ import Token from '../clases/token';
 
 //Middleware personalizado que creamos
 import { verificarToken, adminRole } from '../middlewares/autenticacion';
+import { CLIENT_ID } from '../global/environment';
+
+
+//Le falta typescript a esta madre
+const  {OAuth2Client} = require ('google-auth-library');
+const client = new OAuth2Client (CLIENT_ID);
 
 const usuarioRoutes= Router();
+
+
+
+
+//Autenticacion con google
+
+usuarioRoutes.post('/google', async (req:any, res: Response) =>{
+
+    //De esta forma guardamos el token que viene por el header personalizado
+    const userToken= req.get('x-token') || '';
+
+    //Para usar  esta peticion debe ser asincrona para esperar
+    //que la promesa haya sido resuelta
+    const usuarioGoogle= await verify(userToken)
+    .catch( err =>{
+
+        res.status(404).json({
+            ok:false,
+            message:'Token de google no valido',
+            err
+            });
+        
+        });
+
+        //Asi verificamos si el usuario ya ha sido registrado con el email
+       //Es mejor utilizar findOne para que no regrese un arreglo
+        Usuario.findOne({ email: usuarioGoogle.email}, (err, usuarioBD) =>{
+
+            if(err){
+                return res.json({
+                    ok:false,
+                    message:'Error con el usuario'
+                })
+            }
+
+            //Existe el usuario
+            if( usuarioBD){
+
+                //Si el usuario no esta registrado por google
+                if(! usuarioBD.google ){
+                    return res.status(401).json({
+                        ok:false,
+                        message:'Solo puedes usar la autenticacion normal'
+                    });
+                }else{
+
+                    const tokenUser= Token.crearJwToken({
+                        _id: usuarioBD._id,
+                        nombre: usuarioBD.nombre,
+                        email: usuarioBD.email,
+                        role: usuarioBD.role
+                    });
+                
+                    res.json({
+                        ok:true,
+                        tokenUser
+                    });    
+
+
+                }
+
+
+            }//Si el usuario no existe y esta registrado con google
+            else{
+
+
+
+                const usuario={
+                    nombre: usuarioGoogle.name,
+                    avatar: usuarioGoogle.picture,
+                    email: usuarioGoogle.email ,
+                    role:'usuario',
+                    google:true,
+                    //Asi encriptamos la contraseña
+                    password: ':)'
+                    };
+
+                    
+
+                Usuario.create( usuario ).then( usuarioRegistrado =>{
+
+
+                    const tokenUser= Token.crearJwToken({
+                        _id: usuarioRegistrado._id,
+                        nombre: usuarioRegistrado.nombre,
+                        email: usuarioRegistrado.email,
+                        role: usuarioRegistrado.role
+                    });
+
+                    res.json({
+                        ok:true,
+                        usuarioRegistrado,
+                        tokenUser
+                    });
+
+
+                }).catch( err =>{
+
+                    res.status(404).json({
+                        ok:false,
+                        message:'No se puedo registrar con google',
+                        err
+                    })
+
+                });
+
+
+            }
+
+
+        });
+
+       
+
+    });
+    
+
+
+//Esta funcion recibe un token de google y lo valida para retornar
+//el payload asincronamente
+async function verify(token:string) {
+    const ticket = await client.verifyIdToken({
+        idToken: token,
+        audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3
+    });
+    //Esta contiene la informacion completa del token del usuario
+    const payload = ticket.getPayload();
+    // const userid = payload['sub'];
+
+    return payload;
+
+  }
+
+
+
+
+/*Autenticacion normal con express y mongo*/
 
 
 usuarioRoutes.get('/pagina', verificarToken , async(req:any, res:Response) =>{
@@ -46,8 +191,8 @@ usuarioRoutes.get('/:termino',[verificarToken,adminRole], async(req:any, res:Res
 
 const termino = new RegExp( req.params.termino,'i') ;
 
-
-await Usuario.find( {nombre: termino}) 
+//Es necesario el as para que typescript no tenga conflicto con el regez
+await Usuario.find( {nombre: termino as any }) 
 .limit(10)
 .exec( (err:any, usuarios:any) =>{
 
@@ -104,11 +249,11 @@ usuarioRoutes.post(`/login`, (req:Request, res: Response) =>{
 
 const body= req.body;
 
-Usuario.findOne({ email: body.email}, (err, usuarioDB)=>{
+Usuario.findOne({ email: body.email}, (err, usuarioBD)=>{
 
 if( err) throw new err;
 
-if( ! usuarioDB){
+if( ! usuarioBD){
 
   return res.json({
       ok:false,
@@ -119,18 +264,19 @@ if( ! usuarioDB){
 }
 
 
-if( usuarioDB.compararPassword(body.password)){
+if( (body.password) && usuarioBD.compararPassword(body.password)){
 
-    const tokenUser= Token.crearJwToken({
-        _id: usuarioDB._id,
-        nombre: usuarioDB.nombre,
-        email: usuarioDB.email,
-        role: usuarioDB.role
+    const token= Token.crearJwToken({
+        _id: usuarioBD._id,
+        nombre: usuarioBD.nombre,
+        email: usuarioBD.email,
+        role: usuarioBD.role
     });
 
     res.json({
         ok:true,
-        tokenUser
+        usuario: usuarioBD,
+        token
     });
 
   }
@@ -213,6 +359,7 @@ Usuario.create( usuario).then( usuarioRegistrado =>{
         ok:true,
         usuarioRegistrado
     });
+    
 
 }).catch( err =>{
 

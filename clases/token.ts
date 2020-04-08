@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
+import { seed } from '../global/environment';
 
 
 export default class Token{
 
     //Esta seed es privada para encriptar el token
-    private static seed: string='esta-es-mi-key';
+    private static seed: string= seed;
     private static caducidad :string='30d';
 
     constructor(){

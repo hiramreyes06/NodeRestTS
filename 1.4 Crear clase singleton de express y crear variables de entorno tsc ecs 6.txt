@@ -1,0 +1,80 @@
+Para crear el proyecto de node , dentro de una carpeta ejecutamos los
+ comandos para npm y typescript
+
+npm init
+tsc --init
+
+Ahora tenemos que cambiar el target del tsconfig.json a es6 para no tener
+errores en typescript
+"target": "es6"
+
+Despues creamos una carpeta global y un archivo environment.ts el cual
+tendra el puerto especifico de prueba o usara el de produccion en automatico
+//Asi elige el ambiente de desarrollo en el que esta, desarrollo o produccion:
+
+process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
+
+
+//Se tiene que agregar y configurar previamente varables globales de
+//entorno en heroku en produccion
+
+//Automaticamente toma el valor de la variable global en produccion o en
+//desarrollo
+export const SERVER_PORT: number = Number( process.env.PORT ) || 3000;
+
+//Toma la variable de entorno 
+export const seed:string = process.env.SEED || 'el-string-mas-segura-posible';
+
+//Este el key de la api de google para la autenticacion de usuarios
+export const CLIENT_ID: string='892703108718-t8foigi3dhbasmlg49dls2muv8iihkb7.apps.googleusercontent.com';
+
+let urlDB;
+
+//Dependiendo del ambiente de desarrollo toma la url de la base de datos
+if( process.env.NODE_ENV === 'dev'){
+    urlDB= 'mongodb://localhost:27017/fotosgram';
+}else{
+    //Asi agregamos el link con el que se va a conectar mongoose
+    urlDB= process.env.MONGO_URI;
+}
+
+//Asi creamos una variable para en desarrollo y le asignamos un valor
+process.env.URLDB= urlDB;
+ 
+
+Ahora para crear el servidor rest con express creamos una carpeta llamada 
+clases que conendra las clases que ocuparemos como el server.ts para el 
+patron singleton
+
+import express = require('express');
+
+
+
+export default class Server{
+
+    public app: express.Application;
+    public port: number;
+
+    constructor( puerto: number){
+        this.port= puerto;    
+        this.app= express();
+    }
+
+    //Para inicializar express en una sola instancia en la aplicacion
+    //Patron de diseño SingleTon
+    //Al llamar este metodo inicia el servidor
+    static init (puerto:number){
+
+        return new Server(puerto);
+    }
+
+    start(callback: Function){
+
+        this.app.listen( this.port, callback() );
+
+    }
+
+    
+
+
+} 

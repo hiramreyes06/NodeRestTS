@@ -1,0 +1,9 @@
+Primero debemos de asegurarnos que el modelo del usuario debe tener una 
+propiedad llamada google: boolean, para saber si ha sido autenticado con
+google, o de forma normal con el backend
+
+Primero necesitamos instalar el paquete de google 
+
+npm install google-auth-library --save
+
+

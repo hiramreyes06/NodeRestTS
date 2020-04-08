@@ -30,6 +30,11 @@ const usuarioSchema= new Schema({
         required:[true,'El role es requerido'],
         default:'usuario',
         enum: rolesValidos
+    },
+
+    google:{
+        type: Boolean,
+        default:false
     }
     ,password:{
         type: String,
@@ -37,11 +42,12 @@ const usuarioSchema= new Schema({
     }
 });
 
-interface IUsuario extends Document{
-nombre:String;
+export interface IUsuario extends Document{
+nombre ?:String;
 avatar:String;
 email:String;
 role:String;
+google:Boolean;
 password:String;
 
 

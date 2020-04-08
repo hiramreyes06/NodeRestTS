@@ -1,0 +1,23 @@
+Primero se necesita crear un archivo index.ts que sera el encargado en inicializar
+el servidor utilizando el patron singleton de la clase server, importamos
+
+import Server from './clases/server'
+import {SERVER_PORT} from './global/environment';
+
+import bodyParser from 'body-parser';
+
+const server = Server.init( SERVER_PORT );
+
+//Asi pasamos la data recbida por peticiones por un middleware para obtener
+//el formato json
+server.app.use( bodyParser.urlencoded({extended:true}))
+server.app.use(bodyParser.json());
+
+
+//Y siempre hasta el final
+
+
+server.start( ()=>{
+
+    console.log(`Escuchando el puerto: ${SERVER_PORT}`);
+} );

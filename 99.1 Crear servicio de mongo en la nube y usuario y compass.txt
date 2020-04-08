@@ -1,0 +1,86 @@
+Primero nos debemos registrar en mongo atlas tambien debemos crear un 
+proyecto en el cual tenemos que crear un closter con el hosting que queramos,
+Despues tenemos que configurar el network acces para especificar que ips
+pueden acceder o usar la BD es muy importante para la seguridad
+
+Para probar podemos elegir add current ip address o allow acces from anywhere
+EN PRODUCCION DEBE ESPECIFICAR BIEN QUE IPS para seguridad
+
+Ahora tenemos que crear un usuario para acceder a los clusters y base de 
+datos, en mongo atlas en Databse Acces/ Database Users agregamos un 
+usuario , le damos los permisos necesarios y generamos la contraseña y la
+guardamos , ya que se ocupa para contstruir un link
+
+
+usuario: hiramreyes06
+contra: x7JSyKtE2IjRUrvk
+
+
+**Ahora para el manejo visual de la base de datos de mongo-atlas descargamos 
+mongodb-compass, en el clusters le damos en conect 
+
+Que nos dara un link de acceso, para conectarnos desde mongo-db-compass
+, del cual tenemos que agregar la contraseña generada en <>
+
+mongodb+srv://hiramreyes06:<password>@cluster0-e0rk6.mongodb.net/test
+ 
+
+asi
+
+mongodb+srv://hiramreyes06:x7JSyKtE2IjRUrvk@cluster0-e0rk6.mongodb.net/test
+
+Ahora en el mongoose compas , pegamos en el -hostname lo que tenga 
+despues del @ hasta el .net
+
+habilitamos el srv
+
+En la autenticacion agregamos usuario y contraseña generada y en conect
+
+****Para conectar mongodb-compass con la base de datos local de mongoose
+
+Al guardar la base de datos solo le damos en crear, con el valor que tenga por
+defecto.
+
+En la PAGINA de mongo Atlas , creamos un clusters . que sera la base de datos
+
+Ahora para conectar mongoose con la base de datos atlas, nos vamos al
+config.js para configurar la coneccion:
+
+//PUERTO
+
+//De esta forma configuramos el servidor para modo desarrollo o modo produccion
+//es un objeto global que se ejecuta siempre en node.js actualizado dependeiento del environment -entrorno
+process.env.PORT = process.env.PORT || 3000;
+
+//Elegir el entorno o puerto
+process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
+
+
+//PARA PODER CORRER EN MODO PRODUCCION Y EN MODO DESARROLLO
+let urlDB;
+
+if( process.env.NODE_ENV === 'dev'){
+    urlDB= 'mongodb://localhost:27017/cafe';
+}else{
+    //Asi agregamos el link con el que se va a conectar mongoose
+    urlDB= 'mongodb+srv://hiramreyes06:x7JSyKtE2IjRUrvk@cluster0-e0rk6.mongodb.net/cafe'
+}
+
+//Asi creamos una variable para en desarrollo con el links
+process.env.URLDB= urlDB;
+
+Y despues al server.js para agregar la variable de entorno procces.env.URLDB
+
+//Conectar a base de datos ATLAS o al localhost automaticamente
+//Warnings evitados por los objetos
+mongoose.connect(process.env.URLDB, {
+
+De esta forma se hacen las peticiones al puerto que apunte la aplicacion de 
+node pero a la vez node esta conectado con mongoose a la base de datos atlas
+
+
+
+
+
+
+

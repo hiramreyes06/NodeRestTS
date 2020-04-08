@@ -1,0 +1,77 @@
+Para subir nuestro servicio rest de node a heroku, tenemos que actualizar
+el repositorio de git 
+git add .
+git commit -m "mensaje"
+
+git push origin master
+
+***Y PARA SUBIRLO A HEROKU PREVIAMENTE CONFIGURADO
+
+git push heroku master 
+
+**Ahora para conectar robo3t con la base de datos de mongo atlas, creamos 
+una coneccion , y utilizamos la informacion la opcion de connect aplication 
+desde mongo Atlas
+
+Copeamos la direccion que nos da mongo altas, con constraseña
+
+mongodb+srv://hiramreyes06:x7JSyKtE2IjRUrvk@cluster0-e0rk6.mongodb.net/cafe?retryWrites=true&w=majority
+
+despues en el robot3t, agregamos la dirrecion , donde dice from srv le y damos 
+click, podemos cambiar el nombre, 
+
+Despues en la parte de athentication, en database agregamos admin
+ agregamos nuestro nombre de usuario y contraseña generada
+
+Y donde dice advenced en deafultDataBase tiene que ir el nombre de la
+coleccion creada en mongo db, los nombres estan en clousters en mongo atlas
+
+y listo darle a conectar
+
+
+***Para proteger una varibale de entorno para ocultar el link de la base de datos
+en github y copias... en la terminal dentro del proyecto:
+
+**Para crear una variable de entrono con su valor
+
+heroku config:set MONGO_URI="mongodb+srv://hiramreyes06:x7JSyKtE2IjRUrvk@cluster0-e0rk6.mongodb.net/cafe"
+
+Ahora en el config.js tenemos que agregar esa variable creada en:
+
+}else{
+    //Asi agregamos el link con el que se va a conectar mongoose
+    urlDB= process.env.MONGO_URI;
+}
+
+Despues se tiene que subir los cambios del proyecto a git y heroku
+
+git commit -am "Entorno BD protegido"
+
+git push heroku master
+
+git push origin master
+
+Y listo ....
+
+para ver todas las variables de entorno 
+
+heroku config
+
+Como borrar una variable de entorno 
+
+heroku config:unset nombre
+
+Para ver el valor de una variable
+
+heroku config:get nombre
+
+
+
+
+
+
+
+
+
+
+

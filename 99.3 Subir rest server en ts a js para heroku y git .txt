@@ -1,0 +1,51 @@
+Primero necesitamos subir el proyecto de node compilado a .js, con el package 
+json, package-lock.json, con el comando, para que nos compile a js dist/
+
+tsc -w
+
+Ahora en la carpeta dist/ nos aseguramos de que tenga el package.json y el
+package-lock.json , donde en el package.json debemos agregarle scripts
+main, serve, start, engines con node DEPENDIENDO de donde inicie mi
+servidor en el codigo
+
+{
+  
+  "name": "socket-server",
+  "version": "1.0.0",
+  "description": "Rest server para mapbox",
+  "main": "index.js",
+  "scripts": {
+    "serve":"node index.js",
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines" : { 
+    "node" : ">=8.0.0 <11.0.0" 
+  },
+
+Despues dentro de la carpeta dist/ en la terminal , le creamos un repositorio en
+git con 
+git init
+git add .
+git remote add origin  YELLINKDELREPO
+git commit -m "mensaje"
+
+Despues para subirlo a heroku, le asignamos el nombre que esta en heroku
+
+heroku git:remote -a NOMBREAPPHEROKU
+
+git push heroku master
+
+Y ya dog
+
+Para actualizar se repite desde el git add . , menos el de git remote add....
+
+***Si reniegan al actualizar la rama 
+git push -f
+
+o
+
+git push heroku -f
+
+
+

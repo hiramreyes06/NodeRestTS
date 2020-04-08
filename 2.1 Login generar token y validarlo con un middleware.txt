@@ -1,12 +1,23 @@
-Primero necesitamos crear una clase para manejar los tokens, e la carpeta
-clases creamos toke.ts en donde importaremos jwt con los types
+Primero necesitamos crear una constante en un archivo centralizado, para
+poder guardar la seed en un string que ocupara el token, en global/environtent.ts
+creamos la constante
+
+export const seed:string ='el-string-mas-segura-posible';
+
+import { seed } from '../global/environment';
+
+Despues necesitamos crear una clase para manejar los tokens, e la carpeta
+clases creamos toke.ts en donde importaremos jwt con los types, y la 
+constante que contiene la seed
+
+
 
 import jwt from 'jsonwebtoken';
 
 export default class Token{
 
     //Esta seed es privada para encriptar el token
-    private static seed: string='esta-es-mi-key';
+    private static seed: string=seed;
     private static caducidad :string='30d';
 
     constructor(){

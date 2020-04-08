@@ -47,6 +47,14 @@ Y quedaria asi:
 localhost:3000/user/prueba
 
 
+Ahora para que expres use las rutas creadas , nos vamos al index.ts y 
+importamos 
+
+import usuarioRoutes from './routes/usuario';
+
+//y de esta forma cargamos y usamos las rutas express
+server.app.use(`/usuario`,usuarioRoutes);
+
 Ahora para comprobar que funiona, abrimos postman y le ponemos el tipo que
 es , como get: y despues la direccion local host con el puerto que creamos en
 el archivo server.ts ejemplo: localhost:3000

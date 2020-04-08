@@ -1,6 +1,9 @@
 import Server from './clases/server'
 import {SERVER_PORT} from './global/environment';
 
+import cors, { CorsOptions } from 'cors';
+
+ 
 import {Router, Request, Response} from 'express';
 
 import usuarioRoutes from './routes/usuario';
@@ -15,9 +18,20 @@ import fileUpload from 'express-fileupload';
 
 
 
+
 const prueba= Router();
 
 const server = Server.init( SERVER_PORT );
+
+const corsOptions: CorsOptions ={
+methods: ['GET','PUT','DELETE','POST'],
+credentials:true,
+origin:true
+};
+
+
+
+server.app.use(cors(corsOptions));
 
 //Asi pasamos la data recbida por peticiones por un middleware para obtener
 //el formato json
@@ -42,8 +56,9 @@ server.app.use(`/post`,postRoutes);
 //agregamos el link del local host /nombreBasedeDatos
 
 
-
-mongoose.connect('mongodb://localhost:27017/fotosgram',
+//El as string es necesario para que typesctipt reconosca la variable
+//global como un string
+mongoose.connect(process.env.URLDB as string,
 { useNewUrlParser:true,
 useFindAndModify:false,
 useCreateIndex:true,
@@ -52,7 +67,7 @@ useUnifiedTopology:true }, (err)=>{
 
     if( err ) throw err;
 
-    console.log('Base de datos online');
+    console.log("\x1b[42m",'Base de datos online');
 } );
 
 prueba.get(`/`, (req:Request, res:Response) =>{
@@ -72,5 +87,5 @@ server.app.use(prueba);
 
 server.start( ()=>{
 
-    console.log('Escuchando el pueto 3000');
+    console.log("\x1b[42m",`Escuchando el puerto: ${SERVER_PORT}`);
 } );

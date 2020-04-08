@@ -6,10 +6,10 @@ import path from 'path';
 import fs from 'fs';
 
 import uniqid from 'uniqid';
-import { response } from 'express';
 
 
 
+//Necesitamos poder exportar esta clase para usarla
 export default class FileSystem{
 
 constructor(){};
