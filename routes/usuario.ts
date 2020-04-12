@@ -1,6 +1,6 @@
 import {Router, Request, Response} from 'express';
 
-import { Usuario } from '../models/Usuario';
+import { Usuario, IUsuario } from '../models/Usuario';
 
 //Esta libreria se usa para encriptar string
 import bcrypt from 'bcryptjs';
@@ -24,8 +24,12 @@ const usuarioRoutes= Router();
 
 usuarioRoutes.post('/google', async (req:any, res: Response) =>{
 
+ 
+
+        const userToken= req.get('x-token');
+
     //De esta forma guardamos el token que viene por el header personalizado
-    const userToken= req.get('x-token') || '';
+    
 
     //Para usar  esta peticion debe ser asincrona para esperar
     //que la promesa haya sido resuelta
@@ -34,15 +38,16 @@ usuarioRoutes.post('/google', async (req:any, res: Response) =>{
 
         res.status(404).json({
             ok:false,
-            message:'Token de google no valido',
-            err
+            message:'Token de google no valido'
             });
         
         });
 
+      
+
         //Asi verificamos si el usuario ya ha sido registrado con el email
        //Es mejor utilizar findOne para que no regrese un arreglo
-        Usuario.findOne({ email: usuarioGoogle.email}, (err, usuarioBD) =>{
+        Usuario.findOne({ email: usuarioGoogle.email }, '-password' , (err, usuarioBD) =>{
 
             if(err){
                 return res.json({
@@ -55,12 +60,15 @@ usuarioRoutes.post('/google', async (req:any, res: Response) =>{
             if( usuarioBD){
 
                 //Si el usuario no esta registrado por google
-                if(! usuarioBD.google ){
+                if( usuarioBD.google === false ){
                     return res.status(401).json({
                         ok:false,
-                        message:'Solo puedes usar la autenticacion normal'
+                        message:'Ya estas registrado, necesitas iniciar sesion'
                     });
                 }else{
+
+                    //Si el usuario ya esta registrado pero usa la
+                    // autenticacion de google, solo se verifica el token 
 
                     const tokenUser= Token.crearJwToken({
                         _id: usuarioBD._id,
@@ -71,6 +79,8 @@ usuarioRoutes.post('/google', async (req:any, res: Response) =>{
                 
                     res.json({
                         ok:true,
+                        message:'El usuario ya estaba registrado, google token valido',
+                        usuario: usuarioBD,
                         tokenUser
                     });    
 
@@ -78,7 +88,7 @@ usuarioRoutes.post('/google', async (req:any, res: Response) =>{
                 }
 
 
-            }//Si el usuario no existe y esta registrado con google
+            }//Si el usuario no existe y se esta registrado con google
             else{
 
 
@@ -105,9 +115,11 @@ usuarioRoutes.post('/google', async (req:any, res: Response) =>{
                         role: usuarioRegistrado.role
                     });
 
+                    delete usuarioRegistrado.password;
+
                     res.json({
                         ok:true,
-                        usuarioRegistrado,
+                        usuario: usuarioRegistrado,
                         tokenUser
                     });
 
@@ -163,7 +175,7 @@ const pagina= Number (req.query.pagina) || 1;
 let skip = pagina -1;
 skip *= 10; 
 
- await Usuario.find()
+ await Usuario.find({}, '-password')
 .limit(10)
 .sort({_id :-1})
 .skip(skip)
@@ -187,12 +199,12 @@ res.json({
 });
 
 
-usuarioRoutes.get('/:termino',[verificarToken,adminRole], async(req:any, res:Response) =>{
+usuarioRoutes.get('/termino',[verificarToken,adminRole], async(req:any, res:Response) =>{
 
-const termino = new RegExp( req.params.termino,'i') ;
+const termino = new RegExp( req.query.termino,'i') ;
 
 //Es necesario el as para que typescript no tenga conflicto con el regez
-await Usuario.find( {nombre: termino as any }) 
+await Usuario.find( {nombre: termino as any } ,'-password') 
 .limit(10)
 .exec( (err:any, usuarios:any) =>{
 
@@ -218,28 +230,27 @@ usuarios
 
 });
 
-usuarioRoutes.get('/nmUsuarios', (req:any, res: Response)=>{
 
 
 
-Usuario.countDocuments( (err, nmUsuarios) =>{
+
+usuarioRoutes.get('/nmUsuarios', verificarToken, (req:any, res: Response)=>{
+
+
+Usuario.countDocuments({}, (err, nmUsuarios) =>{
 
 
 if(err) throw err;
 
 
-
-
-    res.json({
+   return res.json({
         ok:true,
         nmUsuarios
+        
     });
 
 
 });
-
-
-
 
 
 
@@ -249,13 +260,15 @@ usuarioRoutes.post(`/login`, (req:Request, res: Response) =>{
 
 const body= req.body;
 
-Usuario.findOne({ email: body.email}, (err, usuarioBD)=>{
+Usuario.findOne({ email: body.email}, (err, usuarioBD:IUsuario)=>{
 
 if( err) throw new err;
 
 if( ! usuarioBD){
 
-  return res.json({
+  
+
+  return res.status(400).json({
       ok:false,
       message:'Usuario/contraseña no encontrada'  
   });
@@ -273,16 +286,25 @@ if( (body.password) && usuarioBD.compararPassword(body.password)){
         role: usuarioBD.role
     });
 
+    
+
     res.json({
         ok:true,
-        usuario: usuarioBD,
+        usuario:{
+            avatar: usuarioBD.avatar,
+            role: usuarioBD.role,
+            google: usuarioBD.google,
+            _id: usuarioBD._id,
+            nombre: usuarioBD.nombre,
+            email: usuarioBD.email
+        },
         token
     });
 
   }
   else{
 
-    res.json({
+    res.status(400).json({
         ok:false,
         message:'usuario/Contraseña no son correctos'
     })
@@ -346,7 +368,7 @@ usuarioRoutes.post(`/crear`, (req: Request, res: Response) =>{
 
     const usuario={
         nombre: req.body.nombre,
-        avatar: req.body.avatar,
+        avatar: req.body.avatar || 'sinFoto',
         email: req.body.email ,
         role:req.body.role,
         //Asi encriptamos la contraseña
@@ -354,6 +376,9 @@ usuarioRoutes.post(`/crear`, (req: Request, res: Response) =>{
         };
 
 Usuario.create( usuario).then( usuarioRegistrado =>{
+
+
+    delete usuarioRegistrado['password'];
 
     res.json({
         ok:true,
@@ -376,6 +401,7 @@ Usuario.create( usuario).then( usuarioRegistrado =>{
 
 
 usuarioRoutes.get(`/token`, verificarToken, (req:any, res: Response) =>{
+
 
 res.json({
     ok:true,

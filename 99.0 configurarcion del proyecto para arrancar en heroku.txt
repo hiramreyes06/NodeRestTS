@@ -1,7 +1,7 @@
-Primero necesitamos subir el proyecto de node compilado a .js, con el package 
-json, package-lock.json, con el comando, para que nos compile a js dist/
+Primero antes de  subir el proyecto de node compilado a .js, necesita tener  el 
+package json, package-lock.json, con el comando, para que nos compile a js 
+dist/
 
-tsc -w
 
 Ahora en la carpeta dist/ nos aseguramos de que tenga el package.json y el
 package-lock.json , donde en el package.json debemos agregarle scripts

@@ -67,7 +67,7 @@ useUnifiedTopology:true }, (err)=>{
 
     if( err ) throw err;
 
-    console.log("\x1b[42m",'Base de datos online');
+    console.log('Base de datos online');
 } );
 
 prueba.get(`/`, (req:Request, res:Response) =>{
@@ -87,5 +87,5 @@ server.app.use(prueba);
 
 server.start( ()=>{
 
-    console.log("\x1b[42m",`Escuchando el puerto: ${SERVER_PORT}`);
+    console.log(`Escuchando el puerto: ${SERVER_PORT}`);
 } );

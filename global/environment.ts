@@ -13,7 +13,7 @@ export const SERVER_PORT: number = Number( process.env.PORT ) || 3000;
 export const seed:string = process.env.SEED || 'el-string-mas-segura-posible';
 
 //Este el key de la api de google para la autenticacion de usuarios
-export const CLIENT_ID: string='892703108718-t8foigi3dhbasmlg49dls2muv8iihkb7.apps.googleusercontent.com';
+export const CLIENT_ID: string='156692169272-0juufebl9iev6ro0c0g2t51o3l9ng6r7.apps.googleusercontent.com';
 
 let urlDB;
 

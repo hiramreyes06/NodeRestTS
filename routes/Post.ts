@@ -96,7 +96,48 @@ postRoutes.get(`/id` , verificarToken, (req:Request, res:Response) =>{
 
 });
 
-postRoutes.post(`/crear`, verificarToken, (req:any, res:Response) =>{
+//Esta ruta sirve para postear sin subir imgs al servidor
+postRoutes.post('/crear',verificarToken, (req:any, res: Response) =>{
+
+    let imgs:string[];
+    
+    if(req.body.imgs){
+        imgs=req.body.imgs.split(','); 
+    }else{
+        imgs=[];
+    }
+
+const post={
+fecha: new Date(),
+titulo: req.body.titulo,
+texto: req.body.texto,
+coords: req.body.coords,
+imgs, 
+usuario: req.usuario._id
+}
+
+
+Post.create( post ).then( post =>{
+
+res.json({
+ok:true,
+post
+})
+
+
+})
+.catch(err => res.status(400).json(
+    { ok:false,
+     message:'Error al crear post',
+      err}));
+
+
+});
+
+
+//Esta ruta es para crear un post en la base de datos pero basado en la
+//ruta que sube archivos al servidor
+postRoutes.post(`/crearTemp`, verificarToken, (req:any, res:Response) =>{
 
 
 
@@ -141,6 +182,7 @@ Post.create( post).then(async postCreado =>{
 
 });
 
+//Esta ruta sirve para subir los archivos y guardarlos en el servidor
 //La funcion debe ser asincona para esperar que la promesa sea resuelta
 postRoutes.post(`/upload`, verificarToken, async (req:any, res:Response) =>{
 

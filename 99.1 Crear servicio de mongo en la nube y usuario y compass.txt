@@ -24,7 +24,7 @@ Que nos dara un link de acceso, para conectarnos desde mongo-db-compass
 , del cual tenemos que agregar la contraseña generada en <>
 
 mongodb+srv://hiramreyes06:<password>@cluster0-e0rk6.mongodb.net/test
- 
+ ****
 
 asi
 

@@ -14,9 +14,9 @@ Token.validarToken( userToken ).then( (decoded:any) =>{
     next();
 }).catch(err =>{ 
 
-    res.json({
+    res.status(400).json({
         ok:false,
-        message:'Token no valido',
+        message:'Autenticacion caducada',
         err
     });
 
