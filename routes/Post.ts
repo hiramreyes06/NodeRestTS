@@ -36,13 +36,15 @@ await Post.find()
     if(!posts){
         return res.json({
             ok:false,
-            message:'No existen posts'
+            message:'No existen posts',
+            posts:[]
         });
     }
     
     res.json({
     ok:true,
-    posts
+    posts,
+    pagina
     });
     
     } );

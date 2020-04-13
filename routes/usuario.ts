@@ -198,8 +198,8 @@ res.json({
 
 });
 
-
-usuarioRoutes.get('/termino',[verificarToken,adminRole], async(req:any, res:Response) =>{
+// adminRole mejor no , esta a la vista de todos los usuarios
+usuarioRoutes.get('/termino',verificarToken, async(req:any, res:Response) =>{
 
 const termino = new RegExp( req.query.termino,'i') ;
 
@@ -368,7 +368,7 @@ usuarioRoutes.post(`/crear`, (req: Request, res: Response) =>{
 
     const usuario={
         nombre: req.body.nombre,
-        avatar: req.body.avatar || 'sinFoto',
+        avatar: req.body.avatar || 'https://res.cloudinary.com/hiramreyes06/image/upload/v1586800939/fotosGram/kwg2dkdgmht0gkjd63wf.jpg',
         email: req.body.email ,
         role:req.body.role,
         //Asi encriptamos la contraseña
@@ -389,7 +389,7 @@ Usuario.create( usuario).then( usuarioRegistrado =>{
 }).catch( err =>{
 
 
-    res.json({
+    res.status(400).json({
         ok:false,
         message:'No se pudo registrar al usuario',
         err
