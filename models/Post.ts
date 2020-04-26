@@ -1,5 +1,15 @@
 import { Schema, Document ,model } from 'mongoose';
 
+//Asi se pueden crear esquemas anidados, donde podemos quitar el id automatico
+const multimedia = new Schema({
+   tipo:{
+       type:String
+   },
+   url:{
+    type:String
+   },
+    _id : {id:false}
+})
 
 const postSchema= new Schema({
 fecha:{
@@ -15,9 +25,7 @@ texto:{
 coords:{
     type:String
 },
-imgs:[{
-    type:String
-}],
+multimedia:[ multimedia ],
 
 //de esta forma se pueden relacionar datos entre modelos de la bd
 usuario:{

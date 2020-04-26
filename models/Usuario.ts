@@ -43,7 +43,7 @@ const usuarioSchema= new Schema({
 });
 
 export interface IUsuario extends Document{
-nombre ?:String;
+nombre :String;
 avatar:String;
 email:String;
 role:String;

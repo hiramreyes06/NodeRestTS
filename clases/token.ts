@@ -33,7 +33,7 @@ export default class Token{
         jwt.verify( userToken, this.seed, (err, decoded )=>{
 
             if(err){
-                reject();
+                reject(err);
             }else{
                 resolve(decoded);
             }

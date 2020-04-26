@@ -101,12 +101,12 @@ postRoutes.get(`/id` , verificarToken, (req:Request, res:Response) =>{
 //Esta ruta sirve para postear sin subir imgs al servidor
 postRoutes.post('/crear',verificarToken, (req:any, res: Response) =>{
 
-    let imgs:string[];
+    let multimedia:string[];
     
-    if(req.body.imgs){
-        imgs=req.body.imgs.split(','); 
+    if(req.body.multimedia){
+        multimedia = JSON.parse(req.body.multimedia);
     }else{
-        imgs=[];
+        multimedia =[];
     }
 
 const post={
@@ -114,7 +114,7 @@ fecha: new Date(),
 titulo: req.body.titulo,
 texto: req.body.texto,
 coords: req.body.coords,
-imgs, 
+multimedia, 
 usuario: req.usuario._id
 }
 

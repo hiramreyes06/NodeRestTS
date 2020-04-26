@@ -38,7 +38,8 @@ usuarioRoutes.post('/google', async (req:any, res: Response) =>{
 
         res.status(404).json({
             ok:false,
-            message:'Token de google no valido'
+            message:'Token de google no valido',
+            err
             });
         
         });
@@ -194,6 +195,54 @@ res.json({
 });
 
  });
+
+
+});
+
+usuarioRoutes.get('/existente',verificarToken, async(req: any, res: Response)=>{
+
+     const nombreU = new RegExp( req.query.nombre,'i') ;
+
+    await Usuario.findOne( {nombre: nombreU as any} )
+    .exec( (err , usuario:IUsuario) =>{
+
+        if(err){
+        return res.status(404).json({
+            ok:false,
+            err
+        });    
+        }
+
+        else if(! usuario){
+           return res.json({
+                existe: false,
+                message:'El nombre '+nombreU+' esta disponible'
+            })  
+
+        }
+
+        
+        if(req.query.nombre.toLowerCase() ===
+        usuario.nombre.toLowerCase()
+        ){
+
+         res.json({
+            existe:true,
+            message:'El nombre '+nombreU+' ya fue usado'
+         })   
+
+        }else{
+            res.json({
+                existe: false,
+                message:'El nombre '+nombreU+' esta disponible'
+            })
+        }
+
+        
+
+
+
+    } )
 
 
 });
