@@ -54,7 +54,7 @@ fecha:Date;
 titulo:string;
 texto:string;
 coords:string;
-imgs:string[];
+multimedia:string[];
 usuario:string;
 
 };
