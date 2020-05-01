@@ -11,6 +11,10 @@ import { verificarToken, adminRole } from '../middlewares/autenticacion';
 import { CLIENT_ID } from '../global/environment';
 
 
+import Server from '../clases/server';
+
+
+
 //Le falta typescript a esta madre
 const  {OAuth2Client} = require ('google-auth-library');
 const client = new OAuth2Client (CLIENT_ID);

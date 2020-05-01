@@ -1,6 +1,6 @@
 import Server from './clases/server'
-import {SERVER_PORT} from './global/environment';
 
+import { SERVER_PORT } from './global/environment'
 import cors, { CorsOptions } from 'cors';
 
  
@@ -8,6 +8,9 @@ import {Router, Request, Response} from 'express';
 
 import usuarioRoutes from './routes/usuario';
 import postRoutes from './routes/Post';
+
+import mensajesRoutes from './routes/mensajes';
+
 
 import mongoose from 'mongoose';
 
@@ -21,7 +24,8 @@ import fileUpload from 'express-fileupload';
 
 const prueba= Router();
 
-const server = Server.init( SERVER_PORT );
+//Modificacion para socket io
+const server = Server.instance;
 
 const corsOptions: CorsOptions ={
 methods: ['GET','PUT','DELETE','POST'],
@@ -52,6 +56,8 @@ server.app.use(fileUpload({
 
 server.app.use(`/usuario`,usuarioRoutes);
 server.app.use(`/post`,postRoutes);
+server.app.use('/mensajes',mensajesRoutes);
+
 
 //agregamos el link del local host /nombreBasedeDatos
 
