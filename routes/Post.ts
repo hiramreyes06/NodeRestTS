@@ -69,9 +69,9 @@ postRoutes.get(`/imagen/:userid/:img`, verificarToken, (req:any, res: Response) 
 });
 
 
-postRoutes.get(`/id` , verificarToken, (req:Request, res:Response) =>{
+postRoutes.get(`/:id` , verificarToken, (req:Request, res:Response) =>{
 
-    const id= req.query.id;
+    const id= req.params.id;
 
     Post.findById(id , async (err, post) =>{
 
@@ -86,11 +86,8 @@ postRoutes.get(`/id` , verificarToken, (req:Request, res:Response) =>{
         }
 
       await  post.populate('usuario', '-password').execPopulate();
-
-        res.json({
-            ok:true,
-            post
-        });
+        //De esta forma retornamos directamente el objecto como esta almacenado en mongo
+        res.json(post);
 
 
 

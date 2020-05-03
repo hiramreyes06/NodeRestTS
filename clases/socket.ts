@@ -6,8 +6,14 @@ import { Usuario } from './usuario';
 
 
 
+
 export const usuariosConectados = new UsuariosLista();
 
+
+/*
+Los listeners creados para socket no puede ser emitido desde el mismo backend, solo desde
+afuera como el backend
+*/
 
 export const conectarCliente = ( cliente: Socket, io: socketIO.Server ) => {
 
@@ -39,29 +45,45 @@ export const mensaje = ( cliente: Socket, io: socketIO.Server ) => {
 
         io.emit('mensaje-nuevo', payload );
 
+       
+
+    });
+
+}
+
+export const post = ( cliente: Socket, io: socketIO.Server ) => {
+
+    cliente.on('post', (  payload: { id: string }  ) => {
+
+        console.log('Post recibido', payload );
+
+        io.emit('post-nuevo', payload );
+
+       
+
     });
 
 }
 
 
+
 // Configurar usuario
 export const configurarUsuario = ( cliente: Socket, io: socketIO.Server ) => {
 
-    cliente.on('configurar-usuario', (  payload: { nombre: string }, callback:Function  ) => {
+    cliente.on('configurar-usuario', (  payload: { nombre: string }, callback: any  ) => {
 
         usuariosConectados.actualizarNombre( cliente.id, payload.nombre );
 
-        io.emit('usuarios-activos', usuariosConectados.getLista()  );
-        
+        io.emit('usuarios-activos',  usuariosConectados.getLista() );
+
+        //Arreglarlo para que retorne json
+        // callback({
+        //     ok:true,
+        //     message:`usuario ${payload.nombre} configurado`
+        // })
+
        
-        
-        callback({
-            ok: true,
-            mensaje: `Usuario ${ payload.nombre }, configurado`
-            
-        } );
     });
-    
 
 }
 

@@ -421,7 +421,7 @@ usuarioRoutes.post(`/crear`, (req: Request, res: Response) =>{
 
     const usuario={
         nombre: req.body.nombre,
-        avatar: req.body.avatar || 'https://res.cloudinary.com/hiramreyes06/image/upload/v1586800939/fotosGram/kwg2dkdgmht0gkjd63wf.jpg',
+        avatar: req.body.avatar || 'https://res.cloudinary.com/hiramreyes06/image/upload/v1588450465/fotosGrammAssets/l8til8hbyefbxk9r8wwx.png',
         email: req.body.email ,
         role:req.body.role,
         //Asi encriptamos la contraseña
