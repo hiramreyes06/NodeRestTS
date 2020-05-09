@@ -6,4 +6,140 @@ Primero necesitamos instalar el paquete de google
 
 npm install google-auth-library --save
 
+En el .ts de la ruta que va a ser usada para recibir el token generado por google
+importamos la libreria y importamos el client_id del global environment
 
+import { CLIENT_ID } from '../global/environment';
+
+//Le falta typescript a esta madre
+const  {OAuth2Client} = require ('google-auth-library');
+const client = new OAuth2Client (CLIENT_ID);
+
+Ahora creamos la ruta dedicada a verificar el token de google y regresar un 
+token generado por el backend
+
+
+//Autenticacion con google
+
+usuarioRoutes.post('/google', async (req:any, res: Response) =>{
+
+ 
+
+        const userToken= req.get('x-token');
+
+    //De esta forma guardamos el token que viene por el header personalizado
+    
+
+    //Para usar  esta peticion debe ser asincrona para esperar
+    //que la promesa haya sido resuelta
+    const usuarioGoogle= await verify(userToken)
+    .catch( err =>{
+
+        res.status(404).json({
+            ok:false,
+            message:'Token de google no valido',
+            err
+            });
+        
+        });
+
+      
+
+        //Asi verificamos si el usuario ya ha sido registrado con el email
+       //Es mejor utilizar findOne para que no regrese un arreglo
+        Usuario.findOne({ email: usuarioGoogle.email }, '-password' , (err, usuarioBD) =>{
+
+            if(err){
+                return res.json({
+                    ok:false,
+                    message:'Error con el usuario'
+                })
+            }
+
+            //Existe el usuario
+            if( usuarioBD){
+
+                //Si el usuario no esta registrado por google
+                if( usuarioBD.google === false ){
+                    return res.status(401).json({
+                        ok:false,
+                        message:'Ya estas registrado, necesitas iniciar sesion'
+                    });
+                }else{
+
+                    //Si el usuario ya esta registrado pero usa la
+                    // autenticacion de google, solo se verifica el token 
+
+                    const tokenUser= Token.crearJwToken({
+                        _id: usuarioBD._id,
+                        nombre: usuarioBD.nombre,
+                        email: usuarioBD.email,
+                        role: usuarioBD.role
+                    });
+                
+                    res.json({
+                        ok:true,
+                        message:'El usuario ya estaba registrado, google token valido',
+                        usuario: usuarioBD,
+                        tokenUser
+                    });    
+
+
+                }
+
+
+            }//Si el usuario no existe y se esta registrado con google
+            else{
+
+
+
+                const usuario={
+                    nombre: usuarioGoogle.name,
+                    avatar: usuarioGoogle.picture,
+                    email: usuarioGoogle.email ,
+                    role:'usuario',
+                    google:true,
+                    //Asi encriptamos la contraseña
+                    password: ':)'
+                    };
+
+                    
+
+                Usuario.create( usuario ).then( usuarioRegistrado =>{
+
+
+                    const tokenUser= Token.crearJwToken({
+                        _id: usuarioRegistrado._id,
+                        nombre: usuarioRegistrado.nombre,
+                        email: usuarioRegistrado.email,
+                        role: usuarioRegistrado.role
+                    });
+
+                    delete usuarioRegistrado.password;
+
+                    res.json({
+                        ok:true,
+                        usuario: usuarioRegistrado,
+                        tokenUser
+                    });
+
+
+                }).catch( err =>{
+
+                    res.status(404).json({
+                        ok:false,
+                        message:'No se puedo registrar con google',
+                        err
+                    })
+
+                });
+
+
+            }
+
+
+        });
+
+       
+
+    });

@@ -7,12 +7,8 @@ import bcrypt from 'bcryptjs';
 import Token from '../clases/token';
 
 //Middleware personalizado que creamos
-import { verificarToken, adminRole } from '../middlewares/autenticacion';
+import { verificarToken} from '../middlewares/autenticacion';
 import { CLIENT_ID } from '../global/environment';
-
-
-import Server from '../clases/server';
-
 
 
 //Le falta typescript a esta madre
@@ -20,7 +16,6 @@ const  {OAuth2Client} = require ('google-auth-library');
 const client = new OAuth2Client (CLIENT_ID);
 
 const usuarioRoutes= Router();
-
 
 
 
@@ -203,7 +198,7 @@ res.json({
 
 });
 
-usuarioRoutes.get('/existente',verificarToken, async(req: any, res: Response)=>{
+usuarioRoutes.get('/existente', async(req: any, res: Response)=>{
 
      const nombreU = new RegExp( req.query.nombre,'i') ;
 
@@ -458,7 +453,8 @@ usuarioRoutes.get(`/token`, verificarToken, (req:any, res: Response) =>{
 
 res.json({
     ok:true,
-    token: req.usuario
+    token: req.usuario,
+    crudo: req.get('x-token')
 });
 
 });

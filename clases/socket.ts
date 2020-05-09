@@ -70,13 +70,15 @@ export const post = ( cliente: Socket, io: socketIO.Server ) => {
 // Configurar usuario
 export const configurarUsuario = ( cliente: Socket, io: socketIO.Server ) => {
 
-    cliente.on('configurar-usuario', (  payload: { nombre: string }, callback: any  ) => {
+    cliente.on('configurar-usuario', (  payload: { nombre: string }, callback: Function  ) => {
 
         usuariosConectados.actualizarNombre( cliente.id, payload.nombre );
 
         io.emit('usuarios-activos',  usuariosConectados.getLista() );
 
-        //Arreglarlo para que retorne json
+        // console.log(callback);
+
+        // // Arreglarlo para que retorne json
         // callback({
         //     ok:true,
         //     message:`usuario ${payload.nombre} configurado`

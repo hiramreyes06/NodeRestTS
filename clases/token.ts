@@ -25,7 +25,7 @@ export default class Token{
     };
 
 
-    static validarToken( userToken:string){
+    static validarToken( userToken:string):Promise<any>{
 
         return new Promise( (resolve, reject) =>{
 
