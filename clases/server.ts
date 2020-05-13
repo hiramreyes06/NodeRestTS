@@ -56,6 +56,8 @@ export default class Server{
             // Obtener usuarios activos
             socket.obtenerUsuarios( cliente, this.io );
 
+            socket.mapaSockets(cliente, this.io);
+
             // Mensajes
             socket.mensaje( cliente, this.io );
 

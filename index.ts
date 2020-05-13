@@ -11,6 +11,8 @@ import postRoutes from './routes/Post';
 
 import mensajesRoutes from './routes/mensajes';
 
+import mapaRoutes from './routes/mapa';
+
 
 import mongoose from 'mongoose';
 
@@ -57,6 +59,7 @@ server.app.use(fileUpload({
 server.app.use(`/usuario`,usuarioRoutes);
 server.app.use(`/post`,postRoutes);
 server.app.use('/mensajes',mensajesRoutes);
+server.app.use('/mapa', mapaRoutes);
 
 
 //agregamos el link del local host /nombreBasedeDatos
