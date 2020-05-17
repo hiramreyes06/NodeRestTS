@@ -14,6 +14,35 @@ const fileSystem= new FileSystem();
 
 const postRoutes= Router();
 
+
+postRoutes.get('/busqueda', (req:any, res: Response) =>{
+
+const titulo= new RegExp(req.query.titulo, 'i') ;
+
+Post.findOne({titulo : titulo}).populate('usuario' ,'-password')
+.exec().then( post=>{
+
+    if(!post){
+        res.status(404).json({
+            existe:false,
+            message:'El post no fue encontrado'
+            
+            });
+    }else{
+
+    res.json(post);
+    }
+
+   
+
+
+}).catch( err=> res.status(400).json(err));
+
+
+
+
+});
+
 //obtener posts de forma paginada
 postRoutes.get(`/pagina`, async (req: Request, res: Response) =>{
 
@@ -69,7 +98,8 @@ postRoutes.get(`/imagen/:userid/:img`, verificarToken, (req:any, res: Response) 
 });
 
 
-postRoutes.get(`/:id` , verificarToken, (req:Request, res:Response) =>{
+
+postRoutes.get(`/:id`, (req:Request, res:Response) =>{
 
     const id= req.params.id;
 
@@ -106,11 +136,17 @@ postRoutes.post('/crear',verificarToken, (req:any, res: Response) =>{
         multimedia =[];
     }
 
+
+  
+
 const post={
 fecha: new Date(),
 titulo: req.body.titulo,
 texto: req.body.texto,
-coords: req.body.coords,
+coords: {
+lng: req.body.coords.lng,
+lat: req.body.coords.lat
+},
 multimedia, 
 usuario: req.usuario._id
 }
@@ -128,7 +164,8 @@ post
 .catch(err => res.status(400).json(
     { ok:false,
      message:'Error al crear post',
-      err}));
+      err}
+      ));
 
 
 });

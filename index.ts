@@ -41,7 +41,7 @@ server.app.use(cors(corsOptions));
 
 //Asi pasamos la data recbida por peticiones por un middleware para obtener
 //el formato json
-server.app.use( bodyParser.urlencoded({extended:true}))
+server.app.use( bodyParser.urlencoded({extended:false}))
 server.app.use(bodyParser.json());
 
 

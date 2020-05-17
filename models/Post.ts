@@ -23,7 +23,12 @@ texto:{
     type: String,
 },
 coords:{
-    type:String
+    lng:{
+        type:Number
+    },
+    lat:{
+        type:Number
+    }
 },
 multimedia:[ multimedia ],
 
